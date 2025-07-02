@@ -1,0 +1,353 @@
+#!/usr/bin/env python3
+
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String
+import os
+import json
+import cv2
+from ultralytics import YOLO
+from pathlib import Path
+from collections import Counter
+from PIL import Image, ImageDraw, ImageFont
+from PIL.Image import UnidentifiedImageError
+from shapely.geometry import Point, Polygon
+from sklearn.cluster import DBSCAN
+from sklearn.metrics.pairwise import haversine_distances
+from torchvision.ops import nms
+import torch
+import math 
+import pandas as pd
+from rclpy.qos import qos_profile_sensor_data, QoSProfile, ReliabilityPolicy, HistoryPolicy
+
+class YoloInferenceNode(Node):
+    """
+    A ROS 2 node that subscribes to geotag messages, performs YOLO inference
+    on the specified image, and publishes the detection results.
+    """
+
+    def __init__(self):
+        super().__init__('yolo_inference_node')
+
+        # Declare parameters for image directory and YOLO model path
+        self.declare_parameter('folder_path', '/home/aseel/images')
+        self.declare_parameter('yolo_model_path', '/home/aseel/yolov8n.pt') # Default to nano model, user can change
+        self.declare_parameter('conf_threshold', 0.01)
+        self.declare_parameter('box_threshold', 0.5)
+        self.declare_parameter('max_area_ratio', 0.5)
+        self.declare_parameter('IOU_THRESHOLD', 0.2)
+        self.declare_parameter('gsd', 0.2)
+        # Get parameter values
+        self.image_directory = self.get_parameter('folder_path').get_parameter_value().string_value
+        self.csv_path = os.path.join(self.image_directory, "inference.csv")
+        self.crops_dir = os.path.join(self.image_directory, "crops")
+        self.yolo_model_path = self.get_parameter('yolo_model_path').get_parameter_value().string_value
+        #self.image_directory = os.path.join(self.image_directory, "captured_frames")
+        self.conf_threshold = self.get_parameter('conf_threshold').value
+        self.box_threshold = self.get_parameter('box_threshold').value
+        self.max_area_ratio = self.get_parameter('max_area_ratio').value
+        self.gsd = self.get_parameter('gsd').value
+        self.device =  "cuda" if torch.cuda.is_available() else "cpu"
+        self.IOU_THRESHOLD = self.get_parameter('IOU_THRESHOLD').value
+        self.TARGET_CLASSES = {
+            'person':'person'
+        }
+        Path(self.crops_dir).mkdir(parents=True, exist_ok=True)
+        self.csv_columns = [
+            'Image Name', 'Image Path', 'Crop Name', 'Crop Path',
+            'Pixel Center X Y', 'Latitude', 'Longitude', 'Class',
+            'Confidence', 'Timestamp', 'Yaw'
+        ]
+        self.csv_file_exists = os.path.exists(self.csv_path)
+        if not self.csv_file_exists:
+            # Create an empty DataFrame with columns if CSV doesn't exist
+            self.results_df = pd.DataFrame(columns=self.csv_columns)
+            self.results_df.to_csv(self.csv_path, index=False)
+            self.get_logger().info(f"Created new CSV file: {self.csv_path}")
+        else:
+            # Load existing CSV if it exists
+            try:
+                self.results_df = pd.read_csv(self.csv_path)
+                self.get_logger().info(f"Loaded existing CSV file: {self.csv_path}")
+            except Exception as e:
+                self.get_logger().error(f"Failed to load existing CSV: {e}. Starting with empty DataFrame.")
+                self.results_df = pd.DataFrame(columns=self.csv_columns)
+
+
+        # Initialize YOLO model
+        try:
+            self.get_logger().info(f"Loading YOLO model from: {self.yolo_model_path}")
+            self.model = YOLO(self.yolo_model_path)
+            self.get_logger().info("YOLO model loaded successfully.")
+        except Exception as e:
+            self.get_logger().error(f"Failed to load YOLO model: {e}")
+            # Exit or handle error appropriately, e.g., by not creating subscribers/publishers
+            # For this example, we'll let it continue but inference will fail.
+            self.model = None
+        status_qos = QoSProfile(
+            reliability=ReliabilityPolicy.RELIABLE,
+            history=HistoryPolicy.KEEP_LAST,
+            depth=1
+        )
+        # Create a subscriber for geotag messages
+        # Subscribes to the 'geotag_topic' topic, expecting String messages.
+        # The callback 'geotag_callback' will be called when a message is received.
+        self.geotag_subscription = self.create_subscription(
+            String,
+            '/geotag_data',
+            self.geotag_callback,
+            status_qos # QoS history depth
+        )
+        self.geotag_subscription # Prevent unused variable warning
+
+        # Create a publisher for YOLO inference results
+        # Publishes String messages to the 'yolo_results_topic'.
+        self.yolo_results_publisher = self.create_publisher(
+            String,
+            'yolo_results_topic',
+            status_qos # QoS history depth
+        )
+        try:
+            self.font = ImageFont.truetype("arial.ttf", 30)
+        except IOError:
+            print("Font loading failed, using default")
+            self.font = ImageFont.load_default() 
+
+        self.get_logger().info("YOLO Inference Node has been started.")
+        self.get_logger().info(f"Listening for geotag messages on 'geotag_topic'.")
+        self.get_logger().info(f"Publishing YOLO results on 'yolo_results_topic'.")
+        self.get_logger().info(f"Image directory set to: {self.image_directory}")
+        self.get_logger().info(f"YOLO model path set to: {self.yolo_model_path}")
+
+    
+    def get_coordinates(self,image_path,point2,point1, lat, lon, yaw):
+        try:
+            lat = float(lat)
+            lon = float(lon)
+            yaw = float(yaw)
+        except ValueError:
+            self.get_logger().error(f"Invalid latitude, longitude, or yaw received: lat={lat}, lon={lon}, yaw={yaw}")
+            return None, None
+        
+        if lat is not None and lon is not None:
+            pixel_distance = math.sqrt((point2[0] - point1[0]) ** 2 + (point2[1] - point1[1]) ** 2)
+            angle = math.degrees(math.atan2(point2[1] - point1[1], point2[0] - point1[0])) - 90
+            real_distance_gsd = (pixel_distance * self.gsd) / 100
+
+            if lat == 0:
+                self.get_logger().info(f"NO LAT AND LON FOUND, {image_path}")
+
+            value = self.newlatlon(lat, lon, yaw, real_distance_gsd, angle)
+            return value
+        else:
+            return None,None,None
+    
+    def newlatlon(self , lat , lon , hdg ,dist, movementHead):
+        lati=math.radians(lat)
+        longi=math.radians(lon)
+        rade = 6367489
+        AD = dist/rade
+        sumofangles = (hdg + movementHead)%360
+        newheading = math.radians(sumofangles)
+        newlati = math.asin(math.sin(lati)*math.cos(AD) + math.cos(lati)*math.sin(AD)*math.cos(newheading))
+        newlongi = longi + math.atan2(math.sin(newheading)*math.sin(AD)*math.cos(lati), math.cos(AD)-math.sin(lati)*math.sin(newlati))
+        ret_lat = int(round(math.degrees(newlati*1e7)))
+        ret_lon = int(round(math.degrees(newlongi*1e7)))
+        return ret_lat, ret_lon
+
+    def geotag_callback(self, msg):
+        """
+        Callback function for the geotag message subscriber.
+        Parses the geotag message, loads the image, performs YOLO inference,
+        and publishes the results.
+        """
+        self.get_logger().info(f"Received geotag message: '{msg.data}'")
+
+        if self.model is None:
+            self.get_logger().error("YOLO model not loaded. Cannot perform inference.")
+            return
+
+        try:
+            # Parse the geotag message
+            # Expected format: "image_time,lat,lon,alt,quat[3],filtered_yaw,image_filename"
+            parts = msg.data.split(',')
+            if len(parts) != 7:
+                self.get_logger().warn(f"Invalid geotag message format. Expected 7 parts, got {len(parts)}: {msg.data}")
+                return
+
+            # Extract image filename (last part of the message)
+            image_filename = parts[6].strip()
+            image_time = parts[0].strip()
+            lat_str = parts[1].strip()
+            lon_str = parts[2].strip()
+            yaw_str = parts[5].strip()
+            image_path = os.path.join(self.image_directory, image_filename)
+            try:
+                lat = float(lat_str)
+                lon = float(lon_str)
+                yaw = float(yaw_str)
+            except ValueError:
+                self.get_logger().error(f"Could not convert lat/lon/yaw to float: lat='{lat_str}', lon='{lon_str}', yaw='{yaw_str}'")
+                return
+            # Load the image
+            if not os.path.exists(image_path):
+                self.get_logger().error(f"Image file not found: {image_path}")
+                return
+
+            self.get_logger().info(f"Loading image for inference: {image_path}")
+            image =  Image.open(image_path).convert('RGB')
+
+            if image is None:
+                self.get_logger().error(f"Failed to load image : {image_path}")
+                return
+            img_width, img_height = image.size
+            image_area = img_width * img_height
+            imgXY = (img_width/2, img_height/2)
+            # Perform YOLO inference
+            self.get_logger().info("Performing YOLO inference...")
+            results = self.model(image, conf=self.conf_threshold) # This runs inference on the image
+            result = results[0]
+            if len(result.boxes) == 0:
+                self.get_logger().info(f"   [WARNING] No detections found for {image_path}")
+
+            boxes = result.boxes.xyxy.cpu().numpy()  # x1, y1, x2, y2 format
+            scores = result.boxes.conf.cpu().numpy()
+            class_ids = result.boxes.cls.cpu().numpy().astype(int)
+            class_names = [result.names[int(cls_id)] for cls_id in class_ids]   
+            # Process results and prepare for publishing
+            filtered_boxes, filtered_labels, filtered_scores = [], [], []
+            for box, score, class_name in zip(boxes, scores, class_names):
+                if class_name in self.TARGET_CLASSES:
+                    x1, y1, x2, y2 = box
+                    
+                    # Calculate bounding box area
+                    box_area = (x2 - x1) * (y2 - y1)
+                    area_ratio = box_area / image_area
+                    
+                    # Apply size filters
+                    if area_ratio > self.max_area_ratio:
+                        self.get_logger().info(f"   [SKIPPED] {class_name} | Score: {score:.4f} | Box too large (Area Ratio: {area_ratio:.2f})")
+                        continue
+                    
+                    if (x2 - x1) < 20 or (y2 - y1) < 20:
+                        self.get_logger().info(f"   [SKIPPED] {class_name} | Score: {score:.4f} | Box too small")
+                        continue
+                    
+                    filtered_boxes.append(box)
+                    filtered_labels.append(self.TARGET_CLASSES[class_name])
+                    filtered_scores.append(score)
+                    self.get_logger().info(f"   [KEPT] {class_name} | Score: {score:.4f} | Box: [{x1:.1f}, {y1:.1f}, {x2:.1f}, {y2:.1f}]")
+
+            if len(filtered_boxes) > 1:
+                keep_indices = nms(
+                    torch.tensor(filtered_boxes).to(self.device), 
+                    torch.tensor(filtered_scores).to(self.device), 
+                    self.IOU_THRESHOLD
+                )
+                final_boxes = [filtered_boxes[i] for i in keep_indices]
+                final_labels = [filtered_labels[i] for i in keep_indices]
+                final_scores = [filtered_scores[i] for i in keep_indices]
+            else:
+                final_boxes = filtered_boxes
+                final_labels = filtered_labels
+                final_scores = filtered_scores
+
+            self.get_logger().info(f"   - Final detections after NMS: {len(final_boxes)}")
+
+            draw = ImageDraw.Draw(image)
+            detections_to_csv = [] 
+            for idx, (box, label, score) in enumerate(zip(final_boxes, final_labels, final_scores)):
+                x1, y1, x2, y2 = box
+                label_text = f"{label} ({score:.2f})"
+                
+                # Draw bounding box
+                draw.rectangle([x1, y1, x2, y2], outline="blue", width=4)
+                draw.text((x1, max(y1 - 30, 0)), label_text, fill="blue", font=self.font)
+
+                # Crop detection
+                try:
+                    crop = image.crop([x1, y1, x2, y2])
+                    crop_filename = f"{image_filename.split('.')[0]}crop{idx}.jpg"
+                    crop_path = os.path.join(self.crops_dir, crop_filename)
+                    crop.save(crop_path)
+                    self.get_logger().info(f"   - Crop saved: {crop_path}")
+                except Exception as e:
+                    self.get_logger().info(f"   [ERROR] Cropping failed: {e}")
+                    continue
+
+                # Calculate center coordinates
+                center_x = int((x1 + x2) / 2)
+                center_y = int((y1 + y2) / 2)
+                cropXY = (center_x, center_y)
+                
+                # Get GPS coordinates
+                try:
+                    value = self.get_coordinates( image_path, imgXY, cropXY, lat, lon, yaw)
+                    if value[0] is None or value[1] is None:
+                        self.get_logger().info(f"   [WARNING] Could not get GPS coordinates for {image_filename}")
+                        continue
+                    
+                    # Convert to decimal degrees
+                    lat_decimal = value[0] / 1e7
+                    lon_decimal = value[1] / 1e7
+                    
+                    # Save data to CSV
+                    detection_data = {
+                        'Image Name': image_filename,
+                        'Image Path': image_path,
+                        'Crop Name': crop_filename,
+                        'Crop Path': crop_path,
+                        'Pixel Center X Y': str(cropXY), # Convert tuple to string for CSV
+                        'Latitude': lat_decimal if lat_decimal is not None else None, # Convert back to decimal degrees
+                        'Longitude': lon_decimal if lon_decimal is not None else None, # Convert back to decimal degrees
+                        'Class': label,
+                        'Confidence': float(score),
+                        'Timestamp': image_time,
+                        'Yaw': float(yaw)
+                    }
+                    detections_to_csv.append(detection_data)
+
+                    output_msg = String()
+                    output_msg.data = json.dumps(detection_data, indent=2)
+                    self.yolo_results_publisher.publish(output_msg)
+                    self.get_logger().info(f"Published individual YOLO detection for {label} in {image_filename}.")
+                    self.get_logger().debug(f"Published data: {output_msg.data}")
+                    
+                except IndexError:
+                    self.get_logger().info(f'   [ERROR] Image does not contain metadata: {image_filename}')
+                    break
+                except Exception as e:
+                    self.get_logger().info(f'   [ERROR] GPS coordinate calculation failed: {e}')
+                    continue
+
+            # Save processed image with bounding boxes
+            try:
+                processed_image_path = os.path.join(self.image_directory, f"processed_{image_filename}")
+                image.save(processed_image_path)
+                self.get_logger().info(f"   - Processed image saved: {processed_image_path}")
+            except Exception as e:
+                self.get_logger().info(f"   [ERROR] Could not save processed image: {e}")
+
+            if detections_to_csv:
+                new_df = pd.DataFrame(detections_to_csv)
+                # Use concat to append to the existing DataFrame and then save
+                self.results_df = pd.concat([self.results_df, new_df], ignore_index=True)
+                self.results_df.to_csv(self.csv_path, index=False)
+                self.get_logger().info(f"Appended {len(detections_to_csv)} detections to CSV: {self.csv_path}")
+            else:
+                self.get_logger().info(f"No detections to append to CSV for {image_filename}.")
+
+           
+
+        except Exception as e:
+            self.get_logger().error(f"Error during YOLO inference or message processing: {e}")
+
+def main(args=None):
+    rclpy.init(args=args)
+    yolo_node = YoloInferenceNode()
+    rclpy.spin(yolo_node) # Keep the node alive
+    yolo_node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()

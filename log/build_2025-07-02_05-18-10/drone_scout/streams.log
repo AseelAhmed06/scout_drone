@@ -1,0 +1,64 @@
+[1.223s] Invoking command in '/home/aseel/scout_drone/src/drone_scout': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=(venv-ardupilot) \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ PYTHONPATH=/home/aseel/scout_drone/build/drone_scout/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages:${PYTHONPATH} VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_scout build --build-base /home/aseel/scout_drone/build/drone_scout/build install --record /home/aseel/scout_drone/build/drone_scout/install.log --single-version-externally-managed install_data
+[1.598s] running egg_info
+[1.599s] creating ../../build/drone_scout/drone_scout.egg-info
+[1.628s] writing ../../build/drone_scout/drone_scout.egg-info/PKG-INFO
+[1.629s] writing dependency_links to ../../build/drone_scout/drone_scout.egg-info/dependency_links.txt
+[1.629s] writing entry points to ../../build/drone_scout/drone_scout.egg-info/entry_points.txt
+[1.630s] writing requirements to ../../build/drone_scout/drone_scout.egg-info/requires.txt
+[1.630s] writing top-level names to ../../build/drone_scout/drone_scout.egg-info/top_level.txt
+[1.630s] writing manifest file '../../build/drone_scout/drone_scout.egg-info/SOURCES.txt'
+[1.692s] reading manifest file '../../build/drone_scout/drone_scout.egg-info/SOURCES.txt'
+[1.693s] writing manifest file '../../build/drone_scout/drone_scout.egg-info/SOURCES.txt'
+[1.693s] running build
+[1.694s] running build_py
+[1.694s] creating /home/aseel/scout_drone/build/drone_scout/build
+[1.695s] creating /home/aseel/scout_drone/build/drone_scout/build/lib
+[1.695s] creating /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[1.696s] copying drone_scout/waypoint_generate.py -> /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[1.696s] copying drone_scout/__init__.py -> /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[1.697s] copying drone_scout/pymavlink_fence.py -> /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[1.697s] copying drone_scout/drone_status.py -> /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[1.697s] copying drone_scout/cam_test.py -> /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[1.698s] copying drone_scout/inference.py -> /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[1.698s] copying drone_scout/cam_csi.py -> /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[1.698s] copying drone_scout/geotag.py -> /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[1.699s] running install
+[1.708s] running install_lib
+[1.739s] creating /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout
+[1.739s] copying /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout/waypoint_generate.py -> /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout
+[1.739s] copying /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout/__init__.py -> /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout
+[1.740s] copying /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout/pymavlink_fence.py -> /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout
+[1.740s] copying /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout/drone_status.py -> /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout
+[1.741s] copying /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout/cam_test.py -> /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout
+[1.741s] copying /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout/inference.py -> /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout
+[1.741s] copying /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout/cam_csi.py -> /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout
+[1.741s] copying /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout/geotag.py -> /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout
+[1.742s] byte-compiling /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout/waypoint_generate.py to waypoint_generate.cpython-312.pyc
+[1.755s] byte-compiling /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout/__init__.py to __init__.cpython-312.pyc
+[1.755s] byte-compiling /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout/pymavlink_fence.py to pymavlink_fence.cpython-312.pyc
+[1.757s] byte-compiling /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout/drone_status.py to drone_status.cpython-312.pyc
+[1.759s] byte-compiling /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout/cam_test.py to cam_test.cpython-312.pyc
+[1.761s] byte-compiling /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout/inference.py to inference.cpython-312.pyc
+[1.765s] byte-compiling /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout/cam_csi.py to cam_csi.cpython-312.pyc
+[1.769s] byte-compiling /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout/geotag.py to geotag.cpython-312.pyc
+[1.773s] running install_data
+[1.773s] creating /home/aseel/scout_drone/install/drone_scout/share/ament_index
+[1.774s] creating /home/aseel/scout_drone/install/drone_scout/share/ament_index/resource_index
+[1.774s] creating /home/aseel/scout_drone/install/drone_scout/share/ament_index/resource_index/packages
+[1.775s] copying resource/drone_scout -> /home/aseel/scout_drone/install/drone_scout/share/ament_index/resource_index/packages
+[1.775s] copying package.xml -> /home/aseel/scout_drone/install/drone_scout/share/drone_scout
+[1.775s] creating /home/aseel/scout_drone/install/drone_scout/share/drone_scout/launch
+[1.776s] copying launch/demo_launch.py -> /home/aseel/scout_drone/install/drone_scout/share/drone_scout/launch
+[1.776s] copying launch/ardupilot_sim.launch.py -> /home/aseel/scout_drone/install/drone_scout/share/drone_scout/launch
+[1.776s] copying launch/scout_launch.py -> /home/aseel/scout_drone/install/drone_scout/share/drone_scout/launch
+[1.777s] running install_egg_info
+[1.807s] Copying ../../build/drone_scout/drone_scout.egg-info to /home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages/drone_scout-0.0.0-py3.12.egg-info
+[1.809s] running install_scripts
+[1.993s] Installing cam_csi script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.994s] Installing cam_test script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.994s] Installing drone_status script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.995s] Installing geotag script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.995s] Installing inference script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.995s] Installing waypoint_generate script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.996s] writing list of installed files to '/home/aseel/scout_drone/build/drone_scout/install.log'
+[2.053s] Invoked command in '/home/aseel/scout_drone/src/drone_scout' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=(venv-ardupilot) \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ PYTHONPATH=/home/aseel/scout_drone/build/drone_scout/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/aseel/scout_drone/install/drone_scout/lib/python3.12/site-packages:${PYTHONPATH} VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_scout build --build-base /home/aseel/scout_drone/build/drone_scout/build install --record /home/aseel/scout_drone/build/drone_scout/install.log --single-version-externally-managed install_data
