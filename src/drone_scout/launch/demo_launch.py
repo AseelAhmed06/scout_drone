@@ -53,7 +53,7 @@ def generate_launch_description():
     )
     camera_type_arg = DeclareLaunchArgument(
         'camera_type',
-        default_value='cam_test', # Default to 'none' or another sensible default
+        default_value='cam_gazebo', # Default to 'none' or another sensible default
         description='Type of camera to launch (cam_test, cam_csi, or none)'
     )
 
@@ -164,6 +164,19 @@ def generate_launch_description():
                 respawn_delay=5.0
             )
             nodes_to_launch.append(camcsi)
+        elif camera_type == 'cam_csi':
+            camgazebo = Node(
+                package='drone_scout',
+                executable='cam_gazebo',
+                name='cam_gazebo',
+                output='screen',
+                parameters=[
+                    common_params # Pass the combined dictionary
+                ],
+                respawn=True,
+                respawn_delay=5.0
+            )
+            nodes_to_launch.append(camgazebo)
         elif camera_type == 'none':
             print("No camera node specified to launch.")
         else:
