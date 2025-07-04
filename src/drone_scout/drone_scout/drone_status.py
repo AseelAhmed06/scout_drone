@@ -8,6 +8,7 @@ from sensor_msgs.msg import Imu, NavSatFix, TimeReference
 from mavros_msgs.msg import State
 import json
 import subprocess # For calling ros2 node list
+from mavros_msgs.msg import WaypointReached
 
 class DroneStatusMonitor(Node):
     """
@@ -27,7 +28,7 @@ class DroneStatusMonitor(Node):
         self.geotagger_status = "unknown"
         self.camera_status = "Initializing..."
         self.fcu_time = None # Store FCU time as a builtin_interfaces/Time object
-
+        self.waypoint = 0
         # Define QoS profiles for subscriptions and publications
         # QoS for sensor data (IMU, GPS) - best effort, small history
         qos_profile_sensor_data = QoSProfile(
@@ -86,7 +87,7 @@ class DroneStatusMonitor(Node):
             '/drone_status',
             qos_profile_system_default
         )
-
+        self.create_subscription(WaypointReached, '/mavros/mission/reached', self.waypoint_callback, 10)
         # Create a timer to periodically check and publish status
         # The timer calls status_check every 1.0 second
         self.timer = self.create_timer(1.0, self.status_check)
@@ -94,6 +95,9 @@ class DroneStatusMonitor(Node):
     def state_cb(self, msg: State):
         """Callback for MAVROS state messages."""
         self.mavros_connected = msg.connected
+
+    def waypoint_callback(self, msg):
+        self.waypoint = msg.wp_seq
 
     def time_reference_cb(self, msg: TimeReference):
         """Callback for time reference messages from MAVROS."""
@@ -141,7 +145,7 @@ class DroneStatusMonitor(Node):
 
             mavros_running = any('/mavros' in node for node in running_nodes)
             geotagger_running = any('/geotag' in node or '/geotagger_node' in node for node in running_nodes)
-            camera_node_running = any('/cam_csi' in node or '/cam_test' in node for node in running_nodes)
+            camera_node_running = any('/cam_csi' in node or '/cam_gazebo' in node or '/cam_test' in node for node in running_nodes)
             inference_running = any('/inference' in node for node in running_nodes)
             waypoint_generator =  any('/waypoint_generate' in node  for node in running_nodes)
         except Exception as e:
@@ -166,6 +170,7 @@ class DroneStatusMonitor(Node):
             "fcu_connected": self.mavros_connected,
             "imu_available": self.imu_available,
             "gps_available": self.gps_available,
+            "waypoint_reached":str(self.waypoint),
             "geotagger_running": geotagger_running,
             "geotagger_status": self.geotagger_status,
             "camera_node_running": camera_node_running,
@@ -190,6 +195,7 @@ class DroneStatusMonitor(Node):
         print("FCU connected:            {}".format("CONNECTED" if self.mavros_connected else "NOT CONNECTED"))
         print("IMU data received:        {}".format("data available" if self.imu_available else "NO DATA"))
         print("GPS data received:        {}".format("data available" if self.gps_available else "NO FIX"))
+        print("Waypoint Reached:        {}".format(str(self.waypoint)))
         print("-" * 30)
         print("Image Geotagger running:  {}".format("running" if geotagger_running else "NOT RUNNING"))
         print("Image Geotagger status:   {}".format(self.geotagger_status))

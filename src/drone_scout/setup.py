@@ -27,6 +27,7 @@ setup(
             'geotag = drone_scout.geotag:main',
             'cam_test = drone_scout.cam_test:main',
             'cam_csi = drone_scout.cam_csi:main',
+            'cam_gazebo = drone_scout.cam_gazebo:main',
             'drone_status = drone_scout.drone_status:main',
             'waypoint_generate = drone_scout.waypoint_generate:main',
             'inference = drone_scout.inference:main',

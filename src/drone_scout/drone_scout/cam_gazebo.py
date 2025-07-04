@@ -24,7 +24,8 @@ class GStreamerImageSaver(Node):
         self.run = False
         self.get_logger().info(f"Saving images to: {self.output_dir}")
         self.get_logger().info("Publishing metadata to: udp_image_metadata")
-
+        self.create_subscription(WaypointReached, '/mavros/mission/reached', self.waypoint_callback, 10)
+        self.current_waypoint_index = -1
         # Open GStreamer pipeline using OpenCV
         self.pipeline = (
             "udpsrc port=5600 caps=application/x-rtp,media=video,clock-rate=90000,encoding-name=H264 ! "
