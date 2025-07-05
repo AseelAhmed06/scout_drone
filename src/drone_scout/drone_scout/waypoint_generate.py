@@ -744,7 +744,7 @@ class LawnmowerPlannerNode(Node):
         # Declare all parameters with default values.
         # This makes them accessible via launch files AND get_parameter()
         self.declare_parameter('kml_file', '') 
-        self.declare_parameter('output_dir', '/tmp') 
+        self.declare_parameter('folder_path', '/tmp') 
         self.declare_parameter('line_spacing', 0.00018)
         self.declare_parameter('flight_altitude', 50.0)
         self.declare_parameter('flight_velocity', 14.0)
@@ -756,7 +756,7 @@ class LawnmowerPlannerNode(Node):
         # Get parameter values during initialization.
         # These will be the launch file values or the declared defaults.
         self.kml_file_init = self.get_parameter('kml_file').get_parameter_value().string_value
-        self.output_dir_init = self.get_parameter('output_dir').get_parameter_value().string_value
+        self.output_dir_init = self.get_parameter('folder_path').get_parameter_value().string_value
         self.fence_script_init = self.get_parameter('fence_script').get_parameter_value().string_value
         
         # Initialize default_params from declared parameters for easy dynamic updates.
@@ -955,14 +955,6 @@ class LawnmowerPlannerNode(Node):
                 kml_file_path_to_use = parsed_params.pop('kml_file')
                 self.get_logger().info(f"KML file path overridden by topic: {kml_file_path_to_use}")
             
-            if 'output_dir' in parsed_params:
-                output_dir_to_use = parsed_params.pop('output_dir')
-                self.get_logger().info(f"Output directory overridden by topic: {output_dir_to_use}")
-
-            if 'fence_script' in parsed_params:
-                fence_script_to_use = parsed_params.pop('fence_script')
-                self.get_logger().info(f"Fence script path overridden by topic: {fence_script_to_use}")
-
             current_planning_params.update(parsed_params) # Update other planning parameters
             self.get_logger().info(f"Effective planning parameters: {current_planning_params}")
             status_msg.data = "Parameters updated from topic message."

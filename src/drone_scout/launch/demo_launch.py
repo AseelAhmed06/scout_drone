@@ -1,7 +1,7 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, ExecuteProcess
 from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import Node
 
@@ -53,7 +53,7 @@ def generate_launch_description():
     )
     camera_type_arg = DeclareLaunchArgument(
         'camera_type',
-        default_value='cam_gazebo', # Default to 'none' or another sensible default
+        default_value='cam_test', # Default to 'none' or another sensible default
         description='Type of camera to launch (cam_test, cam_csi, or none)'
     )
 
@@ -71,6 +71,15 @@ def generate_launch_description():
             print(f"WARNING: Invalid fcu_connection_type '{fcu_connection_type}'. Defaulting to UDP.")
             fcu_url = LaunchConfiguration('udp_fcu_url').perform(context)
         nodes_to_launch = []
+
+        drone_scout_share_dir = get_package_share_directory('drone_scout')
+        prepare_script_path = os.path.join(drone_scout_share_dir, 'scripts', 'prepare_data_folder.py')
+        data_folder_to_prepare = common_params['folder_path']
+        prepare_folder_process = ExecuteProcess(
+            cmd=['python3', prepare_script_path, data_folder_to_prepare],
+            output='screen', 
+        )
+        nodes_to_launch.append(prepare_folder_process)
 
         mavros_node = Node(
             package='mavros',
@@ -138,6 +147,19 @@ def generate_launch_description():
         )
         nodes_to_launch.append(waypoint_generate)
 
+        mission = Node(
+            package='drone_scout',
+            executable='mission_commander',
+            name='mission_commander',
+            output='screen',
+            parameters=[
+                common_params
+            ],
+            respawn=True,
+            respawn_delay=5.0
+        )
+        nodes_to_launch.append(mission)
+
         if camera_type == 'cam_test':
             camtest = Node(
                 package='drone_scout',
@@ -164,7 +186,7 @@ def generate_launch_description():
                 respawn_delay=5.0
             )
             nodes_to_launch.append(camcsi)
-        elif camera_type == 'cam_csi':
+        elif camera_type == 'cam_gazebo':
             camgazebo = Node(
                 package='drone_scout',
                 executable='cam_gazebo',

@@ -13,6 +13,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
+        (os.path.join('share', package_name, 'scripts'), glob(os.path.join('scripts', 'prepare_data_folder.py'))),
         
     ],
     install_requires=['setuptools'],
@@ -31,6 +32,7 @@ setup(
             'drone_status = drone_scout.drone_status:main',
             'waypoint_generate = drone_scout.waypoint_generate:main',
             'inference = drone_scout.inference:main',
+            'mission_commander = drone_scout.mission_commander:main',
         ],
     },
 )

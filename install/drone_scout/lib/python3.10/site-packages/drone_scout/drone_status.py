@@ -8,6 +8,9 @@ from sensor_msgs.msg import Imu, NavSatFix, TimeReference
 from mavros_msgs.msg import State
 import json
 import subprocess # For calling ros2 node list
+from mavros_msgs.msg import WaypointReached
+import os
+import datetime
 
 class DroneStatusMonitor(Node):
     """
@@ -19,7 +22,10 @@ class DroneStatusMonitor(Node):
         # Initialize the ROS2 node with the name 'drone_status_monitor'
         super().__init__('drone_status_monitor')
         self.get_logger().info('Drone Status Monitor Node Initialized.')
-
+        self.declare_parameter('folder_path', '/home/aseel/data')
+        self.data_folder_path = self.get_parameter('folder_path').value
+        self.get_logger().info(f"Configured data folder path: {self.data_folder_path}")
+        #self._prepare_data_folder()
         # Initialize status variables
         self.mavros_connected = False
         self.imu_available = False
@@ -27,7 +33,7 @@ class DroneStatusMonitor(Node):
         self.geotagger_status = "unknown"
         self.camera_status = "Initializing..."
         self.fcu_time = None # Store FCU time as a builtin_interfaces/Time object
-
+        self.waypoint = 0
         # Define QoS profiles for subscriptions and publications
         # QoS for sensor data (IMU, GPS) - best effort, small history
         qos_profile_sensor_data = QoSProfile(
@@ -86,14 +92,54 @@ class DroneStatusMonitor(Node):
             '/drone_status',
             qos_profile_system_default
         )
-
+        self.create_subscription(WaypointReached, '/mavros/mission/reached', self.waypoint_callback, 10)
         # Create a timer to periodically check and publish status
         # The timer calls status_check every 1.0 second
         self.timer = self.create_timer(1.0, self.status_check)
 
+    def _prepare_data_folder(self):
+        """
+        Manages the data folder specified by 'data_folder_path' parameter.
+        If the folder exists and is not empty, it renames it with a timestamp.
+        Then, it ensures a new, empty folder exists at the original path.
+        """
+        folder_path = self.data_folder_path
+        
+        if os.path.exists(folder_path):
+            self.get_logger().info(f"Data folder '{folder_path}' already exists.")
+            # Check if the folder is empty
+            if not os.listdir(folder_path):
+                self.get_logger().info(f"Folder '{folder_path}' is empty. No renaming needed.")
+            else:
+                # Folder exists and is not empty, rename it
+                timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+                new_folder_name = f"{os.path.basename(folder_path)}_{timestamp}"
+                parent_dir = os.path.dirname(folder_path)
+                renamed_path = os.path.join(parent_dir, new_folder_name)
+
+                try:
+                    os.rename(folder_path, renamed_path)
+                    self.get_logger().info(f"Renamed existing data folder from '{folder_path}' to '{renamed_path}'.")
+                except OSError as e:
+                    self.get_logger().error(f"Error renaming folder '{folder_path}': {e}")
+                    # If renaming fails, we might not be able to create a new empty folder,
+                    # so we should log and potentially exit or handle gracefully.
+                    return # Exit the function if renaming fails
+
+        # Ensure the original folder path exists and is empty (either newly created or was already empty)
+        try:
+            os.makedirs(folder_path, exist_ok=True) # exist_ok=True prevents error if folder already exists
+            self.get_logger().info(f"Ensured empty data folder exists at '{folder_path}'.")
+        except OSError as e:
+            self.get_logger().error(f"Error creating data folder '{folder_path}': {e}")
+
+
     def state_cb(self, msg: State):
         """Callback for MAVROS state messages."""
         self.mavros_connected = msg.connected
+
+    def waypoint_callback(self, msg):
+        self.waypoint = msg.wp_seq
 
     def time_reference_cb(self, msg: TimeReference):
         """Callback for time reference messages from MAVROS."""
@@ -141,9 +187,10 @@ class DroneStatusMonitor(Node):
 
             mavros_running = any('/mavros' in node for node in running_nodes)
             geotagger_running = any('/geotag' in node or '/geotagger_node' in node for node in running_nodes)
-            camera_node_running = any('/cam_csi' in node or '/cam_test' in node for node in running_nodes)
+            camera_node_running = any('/cam_csi' in node or '/cam_gazebo' in node or '/cam_test' in node for node in running_nodes)
             inference_running = any('/inference' in node for node in running_nodes)
             waypoint_generator =  any('/waypoint_generate' in node  for node in running_nodes)
+            mission_commander = any('/mission_commander' in node  for node in running_nodes)
         except Exception as e:
             self.get_logger().error(f"Failed to get running nodes: {e}")
             # Keep running_status as False if an error occurs
@@ -166,12 +213,14 @@ class DroneStatusMonitor(Node):
             "fcu_connected": self.mavros_connected,
             "imu_available": self.imu_available,
             "gps_available": self.gps_available,
+            "waypoint_reached":str(self.waypoint),
             "geotagger_running": geotagger_running,
             "geotagger_status": self.geotagger_status,
             "camera_node_running": camera_node_running,
             "camera_status": self.camera_status,
             "waypoint_generate": waypoint_generator,
-            "infernce_running":inference_running
+            "infernce_running":inference_running,
+            "mission_commander":mission_commander,
         }
 
         # Publish the status as a JSON string
@@ -190,6 +239,7 @@ class DroneStatusMonitor(Node):
         print("FCU connected:            {}".format("CONNECTED" if self.mavros_connected else "NOT CONNECTED"))
         print("IMU data received:        {}".format("data available" if self.imu_available else "NO DATA"))
         print("GPS data received:        {}".format("data available" if self.gps_available else "NO FIX"))
+        print("Waypoint Reached:        {}".format(str(self.waypoint)))
         print("-" * 30)
         print("Image Geotagger running:  {}".format("running" if geotagger_running else "NOT RUNNING"))
         print("Image Geotagger status:   {}".format(self.geotagger_status))
@@ -200,6 +250,8 @@ class DroneStatusMonitor(Node):
         print("Infer Node running:      {}".format("running" if inference_running else "NOT RUNNING"))
         print("-" * 30)
         print("Waypoint Node running:      {}".format("running" if waypoint_generator else "NOT RUNNING"))
+        print("-" * 30)
+        print("Mission Commander running:      {}".format("running" if mission_commander else "NOT RUNNING"))
         print("="*30 + "\n")
 
 def main(args=None):

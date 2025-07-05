@@ -42,7 +42,7 @@ class YoloInferenceNode(Node):
         self.csv_path = os.path.join(self.image_directory, "inference.csv")
         self.crops_dir = os.path.join(self.image_directory, "crops")
         self.yolo_model_path = self.get_parameter('yolo_model_path').get_parameter_value().string_value
-        #self.image_directory = os.path.join(self.image_directory, "captured_frames")
+        self.image_directory = os.path.join(self.image_directory, "captured_frames")
         self.conf_threshold = self.get_parameter('conf_threshold').value
         self.box_threshold = self.get_parameter('box_threshold').value
         self.max_area_ratio = self.get_parameter('max_area_ratio').value
