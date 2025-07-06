@@ -14,7 +14,7 @@ def generate_launch_description():
         'target_system_id': 1, 
         'target_component_id': 1,
         'image_folder':'/home/aseel/images',
-        'start_waypoint_index':1,
+        'start_waypoint_index':3,
         'stop_waypoint_index':8,
         'csv_filename':'/home/aseel/camera_timestamps_ros.csv',
         'fps':'1.0',
@@ -132,7 +132,7 @@ def generate_launch_description():
             respawn=True,
             respawn_delay=5.0
         )
-        #nodes_to_launch.append(infernce)
+        nodes_to_launch.append(infernce)
 
         waypoint_generate = Node(
             package='drone_scout',

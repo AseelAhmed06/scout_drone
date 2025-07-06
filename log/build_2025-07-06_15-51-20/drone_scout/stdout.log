@@ -1,0 +1,28 @@
+running egg_info
+writing ../../build/drone_scout/drone_scout.egg-info/PKG-INFO
+writing dependency_links to ../../build/drone_scout/drone_scout.egg-info/dependency_links.txt
+writing entry points to ../../build/drone_scout/drone_scout.egg-info/entry_points.txt
+writing requirements to ../../build/drone_scout/drone_scout.egg-info/requires.txt
+writing top-level names to ../../build/drone_scout/drone_scout.egg-info/top_level.txt
+reading manifest file '../../build/drone_scout/drone_scout.egg-info/SOURCES.txt'
+writing manifest file '../../build/drone_scout/drone_scout.egg-info/SOURCES.txt'
+running build
+running build_py
+running install
+running install_lib
+running install_data
+copying launch/demo_launch.py -> /home/aseel/scout_drone/install/drone_scout/share/drone_scout/launch
+running install_egg_info
+removing '/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../../build/drone_scout/drone_scout.egg-info to /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout-0.0.0-py3.10.egg-info
+running install_scripts
+Installing cam_csi script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+Installing cam_gazebo script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+Installing cam_test script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+Installing demo script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+Installing drone_status script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+Installing geotag script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+Installing inference script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+Installing mission_commander script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+Installing waypoint_generate script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+writing list of installed files to '/home/aseel/scout_drone/build/drone_scout/install.log'
