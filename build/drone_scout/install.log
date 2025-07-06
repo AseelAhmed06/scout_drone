@@ -1,4 +1,5 @@
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/cam_gazebo.py
+/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/demo.py
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/__init__.py
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/drone_status.py
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/geotag.py
@@ -9,6 +10,7 @@
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/inference.py
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/cam_test.py
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/__pycache__/cam_gazebo.cpython-310.pyc
+/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/__pycache__/demo.cpython-310.pyc
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/__pycache__/__init__.cpython-310.pyc
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/__pycache__/drone_status.cpython-310.pyc
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/__pycache__/geotag.cpython-310.pyc
@@ -34,6 +36,7 @@
 /home/aseel/scout_drone/install/drone_scout/lib/drone_scout/cam_csi
 /home/aseel/scout_drone/install/drone_scout/lib/drone_scout/cam_gazebo
 /home/aseel/scout_drone/install/drone_scout/lib/drone_scout/cam_test
+/home/aseel/scout_drone/install/drone_scout/lib/drone_scout/demo
 /home/aseel/scout_drone/install/drone_scout/lib/drone_scout/drone_status
 /home/aseel/scout_drone/install/drone_scout/lib/drone_scout/geotag
 /home/aseel/scout_drone/install/drone_scout/lib/drone_scout/inference

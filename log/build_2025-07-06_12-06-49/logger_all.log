@@ -1,0 +1,157 @@
+[0.375s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.377s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=4, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x7fed8b264760>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7fed8b264280>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7fed8b264280>>)
+[0.652s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.652s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.652s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.652s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.652s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.652s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.652s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/aseel/scout_drone'
+[0.653s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.653s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.653s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.653s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.653s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.653s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.653s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.653s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.653s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.672s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.672s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.672s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.673s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.673s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.673s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.673s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.673s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.674s] Level 1:colcon.colcon_core.package_identification:_identify(home) by extensions ['ignore', 'ignore_ament_install']
+[0.674s] Level 1:colcon.colcon_core.package_identification:_identify(home) by extension 'ignore'
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(home) by extension 'ignore_ament_install'
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(home) by extensions ['colcon_pkg']
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(home) by extension 'colcon_pkg'
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(home) by extensions ['colcon_meta']
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(home) by extension 'colcon_meta'
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(home) by extensions ['ros']
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(home) by extension 'ros'
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(home) by extensions ['cmake', 'python']
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(home) by extension 'cmake'
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(home) by extension 'python'
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(home) by extensions ['python_setup_py']
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(home) by extension 'python_setup_py'
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(home/aseel) by extensions ['ignore', 'ignore_ament_install']
+[0.676s] Level 1:colcon.colcon_core.package_identification:_identify(home/aseel) by extension 'ignore'
+[0.676s] Level 1:colcon.colcon_core.package_identification:_identify(home/aseel) by extension 'ignore_ament_install'
+[0.676s] Level 1:colcon.colcon_core.package_identification:_identify(home/aseel) by extensions ['colcon_pkg']
+[0.676s] Level 1:colcon.colcon_core.package_identification:_identify(home/aseel) by extension 'colcon_pkg'
+[0.676s] Level 1:colcon.colcon_core.package_identification:_identify(home/aseel) by extensions ['colcon_meta']
+[0.676s] Level 1:colcon.colcon_core.package_identification:_identify(home/aseel) by extension 'colcon_meta'
+[0.676s] Level 1:colcon.colcon_core.package_identification:_identify(home/aseel) by extensions ['ros']
+[0.676s] Level 1:colcon.colcon_core.package_identification:_identify(home/aseel) by extension 'ros'
+[0.676s] Level 1:colcon.colcon_core.package_identification:_identify(home/aseel) by extensions ['cmake', 'python']
+[0.676s] Level 1:colcon.colcon_core.package_identification:_identify(home/aseel) by extension 'cmake'
+[0.677s] Level 1:colcon.colcon_core.package_identification:_identify(home/aseel) by extension 'python'
+[0.677s] Level 1:colcon.colcon_core.package_identification:_identify(home/aseel) by extensions ['python_setup_py']
+[0.677s] Level 1:colcon.colcon_core.package_identification:_identify(home/aseel) by extension 'python_setup_py'
+[0.677s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.677s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.677s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.678s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.678s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.678s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.678s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.678s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.678s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.679s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.679s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.679s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.679s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.679s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.679s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.679s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.679s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.679s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.680s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.680s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.680s] Level 1:colcon.colcon_core.package_identification:_identify(src/drone_scout) by extensions ['ignore', 'ignore_ament_install']
+[0.680s] Level 1:colcon.colcon_core.package_identification:_identify(src/drone_scout) by extension 'ignore'
+[0.680s] Level 1:colcon.colcon_core.package_identification:_identify(src/drone_scout) by extension 'ignore_ament_install'
+[0.680s] Level 1:colcon.colcon_core.package_identification:_identify(src/drone_scout) by extensions ['colcon_pkg']
+[0.680s] Level 1:colcon.colcon_core.package_identification:_identify(src/drone_scout) by extension 'colcon_pkg'
+[0.681s] Level 1:colcon.colcon_core.package_identification:_identify(src/drone_scout) by extensions ['colcon_meta']
+[0.681s] Level 1:colcon.colcon_core.package_identification:_identify(src/drone_scout) by extension 'colcon_meta'
+[0.681s] Level 1:colcon.colcon_core.package_identification:_identify(src/drone_scout) by extensions ['ros']
+[0.681s] Level 1:colcon.colcon_core.package_identification:_identify(src/drone_scout) by extension 'ros'
+[0.687s] DEBUG:colcon.colcon_core.package_identification:Package 'src/drone_scout' with type 'ros.ament_python' and name 'drone_scout'
+[0.687s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.687s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.687s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.687s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.687s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.744s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.744s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.747s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 1 installed packages in /home/aseel/scout_drone/install
+[0.748s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 278 installed packages in /opt/ros/humble
+[0.750s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'drone_scout' build argument 'cmake_args' from command line to 'None'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'drone_scout' build argument 'cmake_target' from command line to 'None'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'drone_scout' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'drone_scout' build argument 'cmake_clean_cache' from command line to 'False'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'drone_scout' build argument 'cmake_clean_first' from command line to 'False'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'drone_scout' build argument 'cmake_force_configure' from command line to 'False'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'drone_scout' build argument 'ament_cmake_args' from command line to 'None'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'drone_scout' build argument 'catkin_cmake_args' from command line to 'None'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'drone_scout' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.805s] DEBUG:colcon.colcon_core.verb:Building package 'drone_scout' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/aseel/scout_drone/build/drone_scout', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/aseel/scout_drone/install/drone_scout', 'merge_install': False, 'path': '/home/aseel/scout_drone/src/drone_scout', 'symlink_install': False, 'test_result_base': None}
+[0.806s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.807s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.808s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/aseel/scout_drone/src/drone_scout' with build type 'ament_python'
+[0.808s] Level 1:colcon.colcon_core.shell:create_environment_hook('drone_scout', 'ament_prefix_path')
+[0.814s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.814s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/aseel/scout_drone/install/drone_scout/share/drone_scout/hook/ament_prefix_path.ps1'
+[0.815s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/aseel/scout_drone/install/drone_scout/share/drone_scout/hook/ament_prefix_path.dsv'
+[0.818s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/aseel/scout_drone/install/drone_scout/share/drone_scout/hook/ament_prefix_path.sh'
+[0.820s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.820s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.278s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/aseel/scout_drone/src/drone_scout'
+[1.279s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.279s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.890s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/aseel/scout_drone/src/drone_scout': PYTHONPATH=/home/aseel/scout_drone/build/drone_scout/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_scout build --build-base /home/aseel/scout_drone/build/drone_scout/build install --record /home/aseel/scout_drone/build/drone_scout/install.log --single-version-externally-managed install_data
+[2.556s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/aseel/scout_drone/src/drone_scout' returned '0': PYTHONPATH=/home/aseel/scout_drone/build/drone_scout/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_scout build --build-base /home/aseel/scout_drone/build/drone_scout/build install --record /home/aseel/scout_drone/build/drone_scout/install.log --single-version-externally-managed install_data
+[2.558s] Level 1:colcon.colcon_core.environment:checking '/home/aseel/scout_drone/install/drone_scout' for CMake module files
+[2.559s] Level 1:colcon.colcon_core.environment:checking '/home/aseel/scout_drone/install/drone_scout' for CMake config files
+[2.560s] Level 1:colcon.colcon_core.environment:checking '/home/aseel/scout_drone/install/drone_scout/lib'
+[2.560s] Level 1:colcon.colcon_core.environment:checking '/home/aseel/scout_drone/install/drone_scout/bin'
+[2.560s] Level 1:colcon.colcon_core.environment:checking '/home/aseel/scout_drone/install/drone_scout/lib/pkgconfig/drone_scout.pc'
+[2.560s] Level 1:colcon.colcon_core.environment:checking '/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages'
+[2.560s] Level 1:colcon.colcon_core.shell:create_environment_hook('drone_scout', 'pythonpath')
+[2.561s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/aseel/scout_drone/install/drone_scout/share/drone_scout/hook/pythonpath.ps1'
+[2.561s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/aseel/scout_drone/install/drone_scout/share/drone_scout/hook/pythonpath.dsv'
+[2.562s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/aseel/scout_drone/install/drone_scout/share/drone_scout/hook/pythonpath.sh'
+[2.563s] Level 1:colcon.colcon_core.environment:checking '/home/aseel/scout_drone/install/drone_scout/bin'
+[2.563s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(drone_scout)
+[2.563s] INFO:colcon.colcon_core.shell:Creating package script '/home/aseel/scout_drone/install/drone_scout/share/drone_scout/package.ps1'
+[2.565s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/aseel/scout_drone/install/drone_scout/share/drone_scout/package.dsv'
+[2.566s] INFO:colcon.colcon_core.shell:Creating package script '/home/aseel/scout_drone/install/drone_scout/share/drone_scout/package.sh'
+[2.568s] INFO:colcon.colcon_core.shell:Creating package script '/home/aseel/scout_drone/install/drone_scout/share/drone_scout/package.bash'
+[2.569s] INFO:colcon.colcon_core.shell:Creating package script '/home/aseel/scout_drone/install/drone_scout/share/drone_scout/package.zsh'
+[2.571s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/aseel/scout_drone/install/drone_scout/share/colcon-core/packages/drone_scout)
+[2.571s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[2.572s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[2.572s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[2.572s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[2.662s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.notify_send': Could not find 'notify-send'
+[2.662s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[2.662s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[2.662s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[2.664s] DEBUG:colcon.colcon_notification.desktop_notification.notify2:Failed to initialize notify2: org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.Notifications was not provided by any .service files
+[2.664s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[2.665s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/aseel/scout_drone/install/local_setup.ps1'
+[2.668s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/aseel/scout_drone/install/_local_setup_util_ps1.py'
+[2.671s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/aseel/scout_drone/install/setup.ps1'
+[2.673s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/aseel/scout_drone/install/local_setup.sh'
+[2.674s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/aseel/scout_drone/install/_local_setup_util_sh.py'
+[2.675s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/aseel/scout_drone/install/setup.sh'
+[2.678s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/aseel/scout_drone/install/local_setup.bash'
+[2.679s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/aseel/scout_drone/install/setup.bash'
+[2.681s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/aseel/scout_drone/install/local_setup.zsh'
+[2.682s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/aseel/scout_drone/install/setup.zsh'

@@ -2,6 +2,7 @@
 cam_csi = drone_scout.cam_csi:main
 cam_gazebo = drone_scout.cam_gazebo:main
 cam_test = drone_scout.cam_test:main
+demo = drone_scout.demo:main
 drone_status = drone_scout.drone_status:main
 geotag = drone_scout.geotag:main
 inference = drone_scout.inference:main

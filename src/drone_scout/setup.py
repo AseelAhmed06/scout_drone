@@ -33,6 +33,7 @@ setup(
             'waypoint_generate = drone_scout.waypoint_generate:main',
             'inference = drone_scout.inference:main',
             'mission_commander = drone_scout.mission_commander:main',
+            'demo = drone_scout.demo:main',
         ],
     },
 )

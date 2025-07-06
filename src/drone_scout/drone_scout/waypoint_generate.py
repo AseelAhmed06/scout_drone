@@ -271,21 +271,9 @@ def generate_lawnmower_pattern(polygon, line_spacing=0.0001, angle=None, buffer_
         List of LineString objects representing the flight path
     """
     # Use actual_angle for the planning logic, which might be replaced by optimization
-    actual_angle = angle 
+    actual_angle = find_angle_of_longest_side(polygon) 
 
-    if optimize_angle:
-        if actual_angle == LawnmowerPlannerNode.DEFAULT_OPTIMIZE_ANGLE_SENTINEL: # Check for sentinel
-            print("INFO: optimize_angle is True, and sentinel angle was provided. Finding optimal survey angle (aligned with longest side)...")
-            actual_angle = find_angle_of_longest_side(polygon)
-            print(f"INFO: Optimal angle found: {actual_angle:.2f}°")
-        else:
-            print(f"INFO: optimize_angle is True, but a specific angle ({actual_angle}) was provided. Using provided angle.")
-    else: # optimize_angle is False
-        if actual_angle == LawnmowerPlannerNode.DEFAULT_OPTIMIZE_ANGLE_SENTINEL: # Check for sentinel
-            actual_angle = 0.0
-            print("INFO: optimize_angle is False, and sentinel angle was provided. Defaulting to 0 degrees.")
-        else:
-            print(f"INFO: Using provided angle: {actual_angle} degrees (optimize_angle is False).")
+    
 
     # Generate segments using the internal function with the determined actual_angle
     segments = generate_lawnmower_pattern_internal(polygon, line_spacing, actual_angle, buffer_distance)
@@ -744,7 +732,7 @@ class LawnmowerPlannerNode(Node):
         # Declare all parameters with default values.
         # This makes them accessible via launch files AND get_parameter()
         self.declare_parameter('kml_file', '') 
-        self.declare_parameter('folder_path', '/tmp') 
+        self.declare_parameter('folder_path', '/home/aseel/data') 
         self.declare_parameter('line_spacing', 0.00018)
         self.declare_parameter('flight_altitude', 50.0)
         self.declare_parameter('flight_velocity', 14.0)
@@ -952,7 +940,7 @@ class LawnmowerPlannerNode(Node):
             
             # Override parameters from the JSON message if provided
             if 'kml_file' in parsed_params:
-                kml_file_path_to_use = parsed_params.pop('kml_file')
+                kml_file_path_to_use = os.path.join(self.output_dir_init, parsed_params.pop('kml_file'))
                 self.get_logger().info(f"KML file path overridden by topic: {kml_file_path_to_use}")
             
             current_planning_params.update(parsed_params) # Update other planning parameters
@@ -981,9 +969,7 @@ class LawnmowerPlannerNode(Node):
             flight_lines = generate_lawnmower_pattern(
                 polygon, 
                 line_spacing=current_planning_params['line_spacing'], 
-                angle=current_planning_params['angle'], # Pass the possibly sentinel angle
                 home_coords=home_coords, 
-                optimize_angle=current_planning_params['optimize_angle'], # Pass optimize_angle flag
                 buffer_distance=0.00007 # Fixed buffer, or make it a param
             )
 
