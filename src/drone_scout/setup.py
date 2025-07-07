@@ -34,6 +34,7 @@ setup(
             'inference = drone_scout.inference:main',
             'mission_commander = drone_scout.mission_commander:main',
             'demo = drone_scout.demo:main',
+            'cam_usb = drone_scout.cam_usb:main',
         ],
     },
 )

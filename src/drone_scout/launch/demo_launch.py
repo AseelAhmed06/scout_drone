@@ -32,6 +32,9 @@ def generate_launch_description():
         'max_area_ratio':0.50,
         'gsd':0.23,
         'IOU_THRESHOLD':0.2,
+        'camera_device':'/dev/video0',
+        'video_size':'1920x1080',
+        'usb_frame_rate':1,
     }
 
     fcu_connection_type_arg = DeclareLaunchArgument(
@@ -186,6 +189,19 @@ def generate_launch_description():
                 respawn_delay=5.0
             )
             nodes_to_launch.append(camcsi)
+        elif camera_type == 'cam_usb':
+            camusb = Node(
+                package='drone_scout',
+                executable='cam_usb',
+                name='cam_usb',
+                output='screen',
+                parameters=[
+                    common_params # Pass the combined dictionary
+                ],
+                respawn=True,
+                respawn_delay=5.0
+            )
+            nodes_to_launch.append(camusb)
         elif camera_type == 'cam_gazebo':
             camgazebo = Node(
                 package='drone_scout',
