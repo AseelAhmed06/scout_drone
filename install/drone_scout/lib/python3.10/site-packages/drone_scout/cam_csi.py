@@ -12,6 +12,7 @@ import os
 import threading
 import subprocess
 import signal
+from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy
 
 # Import OpenCV and NumPy for image processing and saving
 import cv2
@@ -56,7 +57,11 @@ class CameraCaptureNode(Node):
         # Waypoint control variables
         self.is_capturing = False # Flag to control if camera is actively capturing
         self.current_waypoint_index = -1 # To store the latest waypoint received
-
+        qos_profile_system_default = QoSProfile(
+            reliability=ReliabilityPolicy.RELIABLE,
+            history=HistoryPolicy.KEEP_LAST,
+            depth=10
+        )
         # Declare and get all parameters
         self.declare_parameter('start_waypoint_index', -1)
         self.declare_parameter('stop_waypoint_index', -1)
@@ -87,6 +92,12 @@ class CameraCaptureNode(Node):
             self.waypoint_callback, # Callback function
             10 # Queue size
         )
+        self.create_subscription(
+            String,
+            '/drone_status/last_waypoint_index',
+            self.waypoint_index_callback,
+            qos_profile_system_default
+        )
         self.get_logger().info("INFO: Subscribed to /mavros/mission/reached for waypoint control.")
         self.get_logger().info("INFO: Press Ctrl+C to stop this node.")
 
@@ -95,6 +106,22 @@ class CameraCaptureNode(Node):
         self.gst_thread.daemon = True # Allow the main program to exit even if this thread is running
         self.gst_thread.start()
         self.get_logger().info("INFO: GStreamer initialization thread started.")
+
+    def waypoint_index_callback(self, msg: String):
+        """
+        Callback function for the /drone_status/last_waypoint_index topic.
+        Converts the received string data to an integer.
+        """
+        try:
+           
+            last_waypoint_index_int = int(msg.data)
+            self.get_logger().info(f'Received last waypoint index (int): {last_waypoint_index_int}')
+            self.stop_waypoint_index = last_waypoint_index_int
+        except ValueError:
+            self.get_logger().error(f'Failed to convert received data "{msg.data}" to integer. Is the publisher sending valid integer strings?')
+        except Exception as e:
+            self.get_logger().error(f'An unexpected error occurred: {e}')
+
 
     def publish_status(self, message: str):
         """

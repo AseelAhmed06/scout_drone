@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
@@ -33,12 +33,39 @@ class GStreamerImageSaver(Node):
         )
         self.cap = cv2.VideoCapture(self.pipeline, cv2.CAP_GSTREAMER)
 
+        qos_profile_system_default = QoSProfile(
+            reliability=ReliabilityPolicy.RELIABLE,
+            history=HistoryPolicy.KEEP_LAST,
+            depth=10
+        )
+
         if not self.cap.isOpened():
             self.get_logger().error("Failed to open GStreamer pipeline.")
             return
-
+        self.create_subscription(
+            String,
+            '/drone_status/last_waypoint_index',
+            self.waypoint_index_callback,
+            qos_profile_system_default
+        )
         # Timer to poll frames
         self.timer = self.create_timer(1.0, self.capture_frame)  # ~1 Hz
+
+    def waypoint_index_callback(self, msg: String):
+        """
+        Callback function for the /drone_status/last_waypoint_index topic.
+        Converts the received string data to an integer.
+        """
+        try:
+           
+            last_waypoint_index_int = int(msg.data)
+            self.get_logger().info(f'Received last waypoint index (int): {last_waypoint_index_int}')
+            self.stop_waypoint_index = last_waypoint_index_int
+        except ValueError:
+            self.get_logger().error(f'Failed to convert received data "{msg.data}" to integer. Is the publisher sending valid integer strings?')
+        except Exception as e:
+            self.get_logger().error(f'An unexpected error occurred: {e}')
+
 
     def waypoint_callback(self, msg):
         new_waypoint_index = msg.wp_seq

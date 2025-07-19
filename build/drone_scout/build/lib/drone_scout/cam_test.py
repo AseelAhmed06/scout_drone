@@ -5,6 +5,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 from mavros_msgs.msg import WaypointReached
+from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy
 
 class CamTest(Node):
     def __init__(self):
@@ -18,7 +19,11 @@ class CamTest(Node):
         self.image_folder = self.get_parameter('image_folder').get_parameter_value().string_value
         self.start_waypoint_index = self.get_parameter('start_waypoint_index').get_parameter_value().integer_value
         self.stop_waypoint_index = self.get_parameter('stop_waypoint_index').get_parameter_value().integer_value
-
+        qos_profile_system_default = QoSProfile(
+            reliability=ReliabilityPolicy.RELIABLE,
+            history=HistoryPolicy.KEEP_LAST,
+            depth=10
+        )
         # Regex to match filenames like nvcamtest_8131_s00_00008.jpg
         self.image_pattern = re.compile(r'nvcamtest_\d+_s\d+_(\d+)\.(jpg|jpeg|png|bmp)', re.IGNORECASE)
 
@@ -31,8 +36,29 @@ class CamTest(Node):
         self.active = False
         self.timer = None
         self.current_waypoint_index = -1
-
+        self.create_subscription(
+            String,
+            '/drone_status/last_waypoint_index',
+            self.waypoint_index_callback,
+            qos_profile_system_default
+        )
         self.get_logger().info('ImageTimestampPublisher initialized and waiting for waypoints...')
+
+    def waypoint_index_callback(self, msg: String):
+        """
+        Callback function for the /drone_status/last_waypoint_index topic.
+        Converts the received string data to an integer.
+        """
+        try:
+           
+            last_waypoint_index_int = int(msg.data)
+            self.get_logger().info(f'Received last waypoint index (int): {last_waypoint_index_int}')
+            self.stop_waypoint_index = last_waypoint_index_int
+        except ValueError:
+            self.get_logger().error(f'Failed to convert received data "{msg.data}" to integer. Is the publisher sending valid integer strings?')
+        except Exception as e:
+            self.get_logger().error(f'An unexpected error occurred: {e}')
+
 
     def waypoint_callback(self, msg):
         new_waypoint_index = msg.wp_seq

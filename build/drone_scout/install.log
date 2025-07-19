@@ -6,6 +6,8 @@
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/pymavlink_fence.py
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/mission_commander.py
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/cam_csi.py
+/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/cluster.py
+/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/cam_usb.py
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/waypoint_generate.py
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/inference.py
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/cam_test.py
@@ -17,6 +19,8 @@
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/__pycache__/pymavlink_fence.cpython-310.pyc
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/__pycache__/mission_commander.cpython-310.pyc
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/__pycache__/cam_csi.cpython-310.pyc
+/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/__pycache__/cluster.cpython-310.pyc
+/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/__pycache__/cam_usb.cpython-310.pyc
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/__pycache__/waypoint_generate.cpython-310.pyc
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/__pycache__/inference.cpython-310.pyc
 /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/__pycache__/cam_test.cpython-310.pyc
@@ -36,6 +40,7 @@
 /home/aseel/scout_drone/install/drone_scout/lib/drone_scout/cam_csi
 /home/aseel/scout_drone/install/drone_scout/lib/drone_scout/cam_gazebo
 /home/aseel/scout_drone/install/drone_scout/lib/drone_scout/cam_test
+/home/aseel/scout_drone/install/drone_scout/lib/drone_scout/cam_usb
 /home/aseel/scout_drone/install/drone_scout/lib/drone_scout/demo
 /home/aseel/scout_drone/install/drone_scout/lib/drone_scout/drone_status
 /home/aseel/scout_drone/install/drone_scout/lib/drone_scout/geotag

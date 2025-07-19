@@ -12,6 +12,8 @@ drone_scout/__init__.py
 drone_scout/cam_csi.py
 drone_scout/cam_gazebo.py
 drone_scout/cam_test.py
+drone_scout/cam_usb.py
+drone_scout/cluster.py
 drone_scout/demo.py
 drone_scout/drone_status.py
 drone_scout/geotag.py

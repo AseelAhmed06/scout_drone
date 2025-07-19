@@ -1,0 +1,33 @@
+[1.349s] Invoking command in '/home/aseel/scout_drone/src/drone_scout': PYTHONPATH=/home/aseel/scout_drone/build/drone_scout/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_scout build --build-base /home/aseel/scout_drone/build/drone_scout/build install --record /home/aseel/scout_drone/build/drone_scout/install.log --single-version-externally-managed install_data
+[1.791s] running egg_info
+[1.794s] writing ../../build/drone_scout/drone_scout.egg-info/PKG-INFO
+[1.799s] writing dependency_links to ../../build/drone_scout/drone_scout.egg-info/dependency_links.txt
+[1.799s] writing entry points to ../../build/drone_scout/drone_scout.egg-info/entry_points.txt
+[1.800s] writing requirements to ../../build/drone_scout/drone_scout.egg-info/requires.txt
+[1.800s] writing top-level names to ../../build/drone_scout/drone_scout.egg-info/top_level.txt
+[1.801s] reading manifest file '../../build/drone_scout/drone_scout.egg-info/SOURCES.txt'
+[1.803s] writing manifest file '../../build/drone_scout/drone_scout.egg-info/SOURCES.txt'
+[1.803s] running build
+[1.803s] running build_py
+[1.803s] copying drone_scout/drone_status.py -> /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[1.804s] running install
+[1.805s] running install_lib
+[1.808s] copying /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout/drone_status.py -> /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout
+[1.808s] byte-compiling /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/drone_status.py to drone_status.cpython-310.pyc
+[1.811s] running install_data
+[1.811s] running install_egg_info
+[1.814s] removing '/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout-0.0.0-py3.10.egg-info' (and everything under it)
+[1.818s] Copying ../../build/drone_scout/drone_scout.egg-info to /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout-0.0.0-py3.10.egg-info
+[1.819s] running install_scripts
+[1.852s] Installing cam_csi script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.852s] Installing cam_gazebo script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.852s] Installing cam_test script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.853s] Installing cam_usb script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.853s] Installing demo script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.853s] Installing drone_status script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.854s] Installing geotag script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.854s] Installing inference script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.854s] Installing mission_commander script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.855s] Installing waypoint_generate script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[1.855s] writing list of installed files to '/home/aseel/scout_drone/build/drone_scout/install.log'
+[1.899s] Invoked command in '/home/aseel/scout_drone/src/drone_scout' returned '0': PYTHONPATH=/home/aseel/scout_drone/build/drone_scout/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_scout build --build-base /home/aseel/scout_drone/build/drone_scout/build install --record /home/aseel/scout_drone/build/drone_scout/install.log --single-version-externally-managed install_data

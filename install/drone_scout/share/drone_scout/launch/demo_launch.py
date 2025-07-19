@@ -25,6 +25,7 @@ def generate_launch_description():
         'flight_velocity':14.0,
         'fence_buffer':4.0,
         'optimize_angle':True,
+        'do_drop':True,
         'fence_script':'/home/aseel/scout_drone/src/drone_scout/drone_scout/pymavlink_fence.py',
         'yolo_model_path':'home/aseel/yolov8n.pt',
         'conf_threshold':0.5,
@@ -32,6 +33,8 @@ def generate_launch_description():
         'max_area_ratio':0.50,
         'gsd':0.23,
         'IOU_THRESHOLD':0.2,
+        'camera_device':'/dev/video0',
+        'do_drop':'yes',
     }
 
     fcu_connection_type_arg = DeclareLaunchArgument(
@@ -98,7 +101,7 @@ def generate_launch_description():
             package='drone_scout',
             executable='geotag',
             name='geotag',
-            output='screen',
+            output='log',
             parameters=[
                 common_params # Pass the combined dictionary
             ],
@@ -111,7 +114,7 @@ def generate_launch_description():
             package='drone_scout',
             executable='drone_status',
             name='drone_status',
-            output='screen',
+            output='log',
             parameters=[
                 common_params # Pass the combined dictionary
             ],
@@ -125,7 +128,7 @@ def generate_launch_description():
             package='drone_scout',
             executable='inference',
             name='inference',
-            output='screen',
+            output='log',
             parameters=[
                 common_params # Pass the combined dictionary
             ],
@@ -138,7 +141,7 @@ def generate_launch_description():
             package='drone_scout',
             executable='waypoint_generate',
             name='waypoint_generate',
-            output='screen',
+            output='log',
             parameters=[
                 common_params
             ],
@@ -151,7 +154,7 @@ def generate_launch_description():
             package='drone_scout',
             executable='mission_commander',
             name='mission_commander',
-            output='screen',
+            output='log',
             parameters=[
                 common_params
             ],
@@ -165,7 +168,7 @@ def generate_launch_description():
                 package='drone_scout',
                 executable='cam_test',
                 name='cam_test',
-                output='screen',
+                output='log',
                 parameters=[
                     common_params # Pass the combined dictionary
                 ],
@@ -178,7 +181,7 @@ def generate_launch_description():
                 package='drone_scout',
                 executable='cam_csi',
                 name='cam_csi',
-                output='screen',
+                output='log',
                 parameters=[
                     common_params # Pass the combined dictionary
                 ],
@@ -186,12 +189,25 @@ def generate_launch_description():
                 respawn_delay=5.0
             )
             nodes_to_launch.append(camcsi)
+        elif camera_type == 'cam_usb':
+            camusb = Node(
+                package='drone_scout',
+                executable='cam_usb',
+                name='cam_usb',
+                output='log',
+                parameters=[
+                    common_params # Pass the combined dictionary
+                ],
+                respawn=True,
+                respawn_delay=5.0
+            )
+            nodes_to_launch.append(camusb)
         elif camera_type == 'cam_gazebo':
             camgazebo = Node(
                 package='drone_scout',
                 executable='cam_gazebo',
                 name='cam_gazebo',
-                output='screen',
+                output='log',
                 parameters=[
                     common_params # Pass the combined dictionary
                 ],

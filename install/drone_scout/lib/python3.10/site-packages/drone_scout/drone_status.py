@@ -8,7 +8,7 @@ from sensor_msgs.msg import Imu, NavSatFix, TimeReference
 from mavros_msgs.msg import State
 import json
 import subprocess # For calling ros2 node list
-from mavros_msgs.msg import WaypointReached
+from mavros_msgs.msg import WaypointReached, WaypointList, Waypoint
 import os
 import datetime
 
@@ -34,6 +34,8 @@ class DroneStatusMonitor(Node):
         self.camera_status = "Initializing..."
         self.fcu_time = None # Store FCU time as a builtin_interfaces/Time object
         self.waypoint = 0
+        self.last_waypoint_index = -1 
+
         # Define QoS profiles for subscriptions and publications
         # QoS for sensor data (IMU, GPS) - best effort, small history
         qos_profile_sensor_data = QoSProfile(
@@ -77,7 +79,7 @@ class DroneStatusMonitor(Node):
             TimeReference,
             '/mavros/time_reference',
             self.time_reference_cb,
-            qos_profile_system_default
+            qos_profile_sensor_data
         )
         self.camera_status_sub = self.create_subscription(
             String,
@@ -93,6 +95,19 @@ class DroneStatusMonitor(Node):
             qos_profile_system_default
         )
         self.create_subscription(WaypointReached, '/mavros/mission/reached', self.waypoint_callback, 10)
+
+        self.waypoint_list_sub = self.create_subscription(
+            WaypointList,
+            '/mavros/mission/waypoints',
+            self.waypoint_list_cb,
+            qos_profile_system_default
+        )
+        # New publisher for the last waypoint index
+        self.last_waypoint_pub = self.create_publisher(
+            String, # Publishing as String (the index number)
+            '/drone_status/last_waypoint_index', # Renamed topic for clarity
+            qos_profile_system_default
+        )
         # Create a timer to periodically check and publish status
         # The timer calls status_check every 1.0 second
         self.timer = self.create_timer(1.0, self.status_check)
@@ -140,6 +155,30 @@ class DroneStatusMonitor(Node):
 
     def waypoint_callback(self, msg):
         self.waypoint = msg.wp_seq
+
+    def waypoint_list_cb(self, msg: WaypointList):
+        """
+        Callback for MAVROS waypoint list messages.
+        This function is triggered when the node starts if waypoints are already
+        on the FCU, or whenever new waypoints are pushed to the FCU.
+        It now publishes only the 0-indexed sequence number of the last waypoint.
+        """
+        if msg.waypoints:
+            self.last_waypoint_index = len(msg.waypoints) - 2 # Get the 0-indexed position of the last waypoint
+            self.get_logger().info(f"Received new waypoint list. Last waypoint index: {self.last_waypoint_index}")
+            
+            # Publish the last waypoint index as a String
+            last_wp_msg = String()
+            last_wp_msg.data = str(self.last_waypoint_index)
+            self.last_waypoint_pub.publish(last_wp_msg)
+        else:
+            self.last_waypoint_index = -1 # Indicate no waypoints
+            self.get_logger().info("Received empty waypoint list. Last waypoint index set to -1.")
+            # Publish a message indicating no waypoints
+            empty_wp_msg = String()
+            empty_wp_msg.data = str(self.last_waypoint_index) # Publish -1
+            self.last_waypoint_pub.publish(empty_wp_msg)
+
 
     def time_reference_cb(self, msg: TimeReference):
         """Callback for time reference messages from MAVROS."""

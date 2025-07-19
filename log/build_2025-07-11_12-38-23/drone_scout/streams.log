@@ -1,0 +1,49 @@
+[1.429s] Invoking command in '/home/aseel/scout_drone/src/drone_scout': PYTHONPATH=/home/aseel/scout_drone/build/drone_scout/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_scout build --build-base /home/aseel/scout_drone/build/drone_scout/build install --record /home/aseel/scout_drone/build/drone_scout/install.log --single-version-externally-managed install_data
+[1.987s] running egg_info
+[1.991s] writing ../../build/drone_scout/drone_scout.egg-info/PKG-INFO
+[1.992s] writing dependency_links to ../../build/drone_scout/drone_scout.egg-info/dependency_links.txt
+[1.992s] writing entry points to ../../build/drone_scout/drone_scout.egg-info/entry_points.txt
+[1.993s] writing requirements to ../../build/drone_scout/drone_scout.egg-info/requires.txt
+[1.993s] writing top-level names to ../../build/drone_scout/drone_scout.egg-info/top_level.txt
+[1.997s] reading manifest file '../../build/drone_scout/drone_scout.egg-info/SOURCES.txt'
+[1.999s] writing manifest file '../../build/drone_scout/drone_scout.egg-info/SOURCES.txt'
+[2.000s] running build
+[2.000s] running build_py
+[2.000s] copying drone_scout/cam_gazebo.py -> /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[2.001s] copying drone_scout/cam_csi.py -> /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[2.001s] copying drone_scout/cluster.py -> /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[2.002s] copying drone_scout/cam_usb.py -> /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[2.002s] copying drone_scout/inference.py -> /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[2.002s] copying drone_scout/cam_test.py -> /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout
+[2.003s] running install
+[2.003s] running install_lib
+[2.005s] copying /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout/cam_gazebo.py -> /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout
+[2.006s] copying /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout/cam_csi.py -> /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout
+[2.006s] copying /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout/cluster.py -> /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout
+[2.007s] copying /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout/cam_usb.py -> /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout
+[2.007s] copying /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout/inference.py -> /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout
+[2.008s] copying /home/aseel/scout_drone/build/drone_scout/build/lib/drone_scout/cam_test.py -> /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout
+[2.008s] byte-compiling /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/cam_gazebo.py to cam_gazebo.cpython-310.pyc
+[2.011s] byte-compiling /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/cam_csi.py to cam_csi.cpython-310.pyc
+[2.019s] byte-compiling /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/cluster.py to cluster.cpython-310.pyc
+[2.023s] byte-compiling /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/cam_usb.py to cam_usb.cpython-310.pyc
+[2.026s] byte-compiling /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/inference.py to inference.cpython-310.pyc
+[2.030s] byte-compiling /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout/cam_test.py to cam_test.cpython-310.pyc
+[2.033s] running install_data
+[2.034s] copying launch/demo_launch.py -> /home/aseel/scout_drone/install/drone_scout/share/drone_scout/launch
+[2.036s] running install_egg_info
+[2.041s] removing '/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout-0.0.0-py3.10.egg-info' (and everything under it)
+[2.042s] Copying ../../build/drone_scout/drone_scout.egg-info to /home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages/drone_scout-0.0.0-py3.10.egg-info
+[2.044s] running install_scripts
+[2.080s] Installing cam_csi script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[2.081s] Installing cam_gazebo script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[2.081s] Installing cam_test script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[2.082s] Installing cam_usb script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[2.083s] Installing demo script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[2.083s] Installing drone_status script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[2.083s] Installing geotag script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[2.084s] Installing inference script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[2.084s] Installing mission_commander script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[2.084s] Installing waypoint_generate script to /home/aseel/scout_drone/install/drone_scout/lib/drone_scout
+[2.084s] writing list of installed files to '/home/aseel/scout_drone/build/drone_scout/install.log'
+[2.137s] Invoked command in '/home/aseel/scout_drone/src/drone_scout' returned '0': PYTHONPATH=/home/aseel/scout_drone/build/drone_scout/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/aseel/scout_drone/install/drone_scout/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_scout build --build-base /home/aseel/scout_drone/build/drone_scout/build install --record /home/aseel/scout_drone/build/drone_scout/install.log --single-version-externally-managed install_data
