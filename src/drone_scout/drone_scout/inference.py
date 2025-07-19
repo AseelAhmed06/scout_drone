@@ -104,7 +104,7 @@ class YoloInferenceNode(Node):
         # Publishes String messages to the 'yolo_results_topic'.
         self.yolo_results_publisher = self.create_publisher(
             String,
-            'yolo_results_topic',
+            '/yolo_results_topic',
             status_qos # QoS history depth
         )
         try:

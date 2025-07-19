@@ -153,7 +153,7 @@ def generate_launch_description():
             package='drone_scout',
             executable='mission_commander',
             name='mission_commander',
-            output='log',
+            output='screen',
             parameters=[
                 common_params
             ],
